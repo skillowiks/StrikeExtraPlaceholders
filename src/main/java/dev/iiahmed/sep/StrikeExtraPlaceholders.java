@@ -1,5 +1,6 @@
 package dev.iiahmed.sep;
 
+import dev.iiahmed.sep.command.QuickRanked;
 import dev.iiahmed.sep.command.SEP;
 import dev.iiahmed.sep.util.Expantion;
 import ga.strikepractice.StrikePractice;
@@ -29,6 +30,7 @@ public final class StrikeExtraPlaceholders extends JavaPlugin {
         runTask();
         new Expantion().register();
         Bukkit.getPluginCommand("SEP").setExecutor(new SEP());
+        Bukkit.getPluginCommand("quickranked").setExecutor(new QuickRanked());
         this.debug = getConfig().getBoolean("settings.debug");
     }
 

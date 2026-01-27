@@ -8,3 +8,6 @@ website: https://iiahmed.dev
 commands:
   SEP:
     description: the StrikeExtraPlaceholders command
+  quickranked:
+    description: Быстрый поиск - закидывает в очередь где уже есть игрок
+    aliases: [qr]

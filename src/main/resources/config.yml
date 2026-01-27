@@ -1,6 +1,11 @@
 settings:
   debug: false
 # Those messages are null safe so if they can't be read the plugin would use default ones automatically.
+quickranked:
+  already-in-fight: '&cТы уже в бою!'
+  already-in-queue: '&cТы уже в очереди!'
+  no-queue-found: '&cНет доступных очередей с игроками!'
+  joined-queue: '&aТы присоединился к очереди: &e%kit%'
 message:
   invalid-placeholder: '&cINVALID PLACEHOLDER'
   invalid-kit: '&cKIT DOESN''T EXIST'
