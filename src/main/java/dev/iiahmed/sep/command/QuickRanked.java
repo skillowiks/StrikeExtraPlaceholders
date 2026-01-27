@@ -36,12 +36,15 @@ public class QuickRanked implements CommandExecutor {
         }
 
         // Ищем игрока в ranked очереди
-        BattleKit foundKit = null;
+        String foundKit = null;
         for (Player online : Bukkit.getOnlinePlayers()) {
             if (online.equals(player)) continue;
             if (api.isInQueue(online) && api.isRanked(online)) {
-                foundKit = api.getQueuedKit(online);
-                break;
+                BattleKit kit = api.getQueuedKit(online);
+                if (kit != null) {
+                    foundKit = kit.getName();
+                    break;
+                }
             }
         }
 
@@ -50,9 +53,8 @@ public class QuickRanked implements CommandExecutor {
             return true;
         }
 
-        // Добавляем в ranked очередь
-        api.joinQueue(player, foundKit, true);
-        player.sendMessage(getMessage("joined-queue").replace("%kit%", foundKit.getName()));
+        // Выполняем команду ranked от имени игрока
+        player.performCommand("ranked " + foundKit);
 
         return true;
     }
@@ -64,7 +66,6 @@ public class QuickRanked implements CommandExecutor {
                 case "already-in-fight": return ChatColor.RED + "Ты уже в бою!";
                 case "already-in-queue": return ChatColor.RED + "Ты уже в очереди!";
                 case "no-queue-found": return ChatColor.RED + "Нет доступных очередей с игроками!";
-                case "joined-queue": return ChatColor.GREEN + "Ты присоединился к очереди: %kit%";
                 default: return ChatColor.RED + "Неизвестная ошибка";
             }
         }
