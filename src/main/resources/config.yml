@@ -6,6 +6,7 @@ quickranked:
   already-in-queue: '&cТы уже в очереди!'
   no-queue-found: '&cНет доступных очередей с игроками!'
   joined-queue: '&aТы присоединился к очереди: &e%kit%'
+  queue-join-broadcast: '&r樂 &#C9E4DEИгрок &b<player> &#C9E4DEначал поиск с китом <kit>'
 message:
   invalid-placeholder: '&cINVALID PLACEHOLDER'
   invalid-kit: '&cKIT DOESN''T EXIST'

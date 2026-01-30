@@ -2,6 +2,7 @@ package dev.iiahmed.sep;
 
 import dev.iiahmed.sep.command.QuickRanked;
 import dev.iiahmed.sep.command.SEP;
+import dev.iiahmed.sep.listener.QueueListener;
 import dev.iiahmed.sep.util.Expantion;
 import ga.strikepractice.StrikePractice;
 import ga.strikepractice.api.StrikePracticeAPI;
@@ -22,6 +23,7 @@ public final class StrikeExtraPlaceholders extends JavaPlugin {
     private HashMap<String, Integer> queueAmounts;
     private HashMap<String, Integer> fightAmounts;
     private boolean debug;
+    private QueueListener queueListener;
 
     @Override
     public void onEnable() {
@@ -31,6 +33,8 @@ public final class StrikeExtraPlaceholders extends JavaPlugin {
         new Expantion().register();
         Bukkit.getPluginCommand("SEP").setExecutor(new SEP());
         Bukkit.getPluginCommand("quickranked").setExecutor(new QuickRanked());
+        queueListener = new QueueListener();
+        queueListener.start();
         this.debug = getConfig().getBoolean("settings.debug");
     }
 
@@ -88,5 +92,8 @@ public final class StrikeExtraPlaceholders extends JavaPlugin {
     @Override
     public void onDisable() {
         cancelTask();
+        if (queueListener != null) {
+            queueListener.stop();
+        }
     }
 }
