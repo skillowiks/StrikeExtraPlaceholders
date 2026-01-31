@@ -11,3 +11,6 @@ commands:
   quickranked:
     description: Быстрый поиск - закидывает в очередь где уже есть игрок
     aliases: [qr]
+  queuenotify:
+    description: Включить/выключить уведомления о поиске матчей
+    aliases: [qn, queuealert]

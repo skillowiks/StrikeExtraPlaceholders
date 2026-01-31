@@ -1,6 +1,7 @@
 package dev.iiahmed.sep;
 
 import dev.iiahmed.sep.command.QuickRanked;
+import dev.iiahmed.sep.command.QueueNotify;
 import dev.iiahmed.sep.command.SEP;
 import dev.iiahmed.sep.listener.QueueListener;
 import dev.iiahmed.sep.util.Expantion;
@@ -33,7 +34,8 @@ public final class StrikeExtraPlaceholders extends JavaPlugin {
         new Expantion().register();
         Bukkit.getPluginCommand("SEP").setExecutor(new SEP());
         Bukkit.getPluginCommand("quickranked").setExecutor(new QuickRanked());
-        queueListener = new QueueListener();
+        Bukkit.getPluginCommand("queuenotify").setExecutor(new QueueNotify());
+        queueListener = new QueueListener(this);
         queueListener.start();
         this.debug = getConfig().getBoolean("settings.debug");
     }
@@ -49,7 +51,8 @@ public final class StrikeExtraPlaceholders extends JavaPlugin {
     }
 
     private void runTask() {
-        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this::update, 0, 2 * 20);
+        // Увеличен интервал с 2 до 5 секунд для снижения нагрузки
+        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this::update, 0, 5 * 20);
         if (taskID == -1) runTask();
     }
 

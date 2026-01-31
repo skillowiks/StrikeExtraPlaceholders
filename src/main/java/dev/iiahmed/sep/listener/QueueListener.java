@@ -16,10 +16,33 @@ import java.util.regex.Pattern;
 
 public class QueueListener {
 
-    private final StrikeExtraPlaceholders plugin = StrikeExtraPlaceholders.getInstance();
+    private final StrikeExtraPlaceholders plugin;
     private final Set<UUID> playersInQueue = new HashSet<>();
+    private static final Set<UUID> disabledNotifications = new HashSet<>();
     private static final Pattern HEX_PATTERN = Pattern.compile("&#([A-Fa-f0-9]{6})");
     private int taskId;
+
+    public QueueListener(StrikeExtraPlaceholders plugin) {
+        this.plugin = plugin;
+    }
+
+    /**
+     * Переключает уведомления для игрока
+     * @return true если уведомления теперь отключены, false если включены
+     */
+    public static boolean toggleNotifications(UUID uuid) {
+        if (disabledNotifications.contains(uuid)) {
+            disabledNotifications.remove(uuid);
+            return false;
+        } else {
+            disabledNotifications.add(uuid);
+            return true;
+        }
+    }
+
+    public static boolean hasNotificationsDisabled(UUID uuid) {
+        return disabledNotifications.contains(uuid);
+    }
 
     public void start() {
         StrikePracticeAPI api = StrikePractice.getAPI();
@@ -54,7 +77,12 @@ public class QueueListener {
                             String message = getMessage("queue-join-broadcast")
                                     .replace("<player>", player.getName())
                                     .replace("<kit>", kitDisplay);
-                            Bukkit.broadcastMessage(message);
+                            // Отправляем только тем, у кого включены уведомления
+                            for (Player online : Bukkit.getOnlinePlayers()) {
+                                if (!disabledNotifications.contains(online.getUniqueId())) {
+                                    online.sendMessage(message);
+                                }
+                            }
                         }
                     }
                 } else if (!inQueue && playersInQueue.contains(uuid)) {
