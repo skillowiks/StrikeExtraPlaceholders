@@ -3,6 +3,7 @@ package dev.iiahmed.sep;
 import dev.iiahmed.sep.command.QuickRanked;
 import dev.iiahmed.sep.command.QueueNotify;
 import dev.iiahmed.sep.command.SEP;
+import dev.iiahmed.sep.listener.KillRegenListener;
 import dev.iiahmed.sep.listener.QueueListener;
 import dev.iiahmed.sep.util.Expantion;
 import ga.strikepractice.StrikePractice;
@@ -37,6 +38,13 @@ public final class StrikeExtraPlaceholders extends JavaPlugin {
         Bukkit.getPluginCommand("queuenotify").setExecutor(new QueueNotify());
         queueListener = new QueueListener(this);
         queueListener.start();
+        
+        // Регистрируем свой killregen если включён
+        if (getConfig().getBoolean("killregen.enabled", true)) {
+            Bukkit.getPluginManager().registerEvents(new KillRegenListener(this), this);
+            getLogger().info("KillRegen enabled");
+        }
+        
         this.debug = getConfig().getBoolean("settings.debug");
     }
 
