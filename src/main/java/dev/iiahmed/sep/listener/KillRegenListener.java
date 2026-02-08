@@ -106,49 +106,56 @@ public class KillRegenListener implements Listener {
     }
     
     /**
-     * Рефилит инвентарь — добавляет недостающие предметы до нужного количества,
-     * не меняя расположение существующих предметов.
+     * Рефилит инвентарь — добавляет недостающие предметы до нужного количества.
+     * Простой подход: для каждого типа предмета в ките считаем сколько нужно и сколько есть.
      */
     private void refillInventory(Player player, BattleKit kit) {
         org.bukkit.inventory.PlayerInventory inv = player.getInventory();
         java.util.List<org.bukkit.inventory.ItemStack> kitItems = kit.getInventory();
         
-        // Считаем сколько каждого предмета должно быть в ките
-        java.util.Map<String, Integer> kitAmounts = new java.util.HashMap<>();
+        // Группируем предметы кита по isSimilar()
+        java.util.List<org.bukkit.inventory.ItemStack> uniqueKitItems = new java.util.ArrayList<>();
+        java.util.List<Integer> kitAmounts = new java.util.ArrayList<>();
+        
         for (org.bukkit.inventory.ItemStack item : kitItems) {
-            if (item != null && item.getType() != org.bukkit.Material.AIR) {
-                String key = getItemKey(item);
-                kitAmounts.merge(key, item.getAmount(), Integer::sum);
+            if (item == null || item.getType() == org.bukkit.Material.AIR) continue;
+            
+            // Ищем похожий предмет в списке
+            boolean found = false;
+            for (int i = 0; i < uniqueKitItems.size(); i++) {
+                if (uniqueKitItems.get(i).isSimilar(item)) {
+                    kitAmounts.set(i, kitAmounts.get(i) + item.getAmount());
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                uniqueKitItems.add(item.clone());
+                kitAmounts.add(item.getAmount());
             }
         }
         
-        // Считаем сколько каждого предмета есть у игрока
-        java.util.Map<String, Integer> playerAmounts = new java.util.HashMap<>();
-        for (org.bukkit.inventory.ItemStack item : inv.getContents()) {
-            if (item != null && item.getType() != org.bukkit.Material.AIR) {
-                String key = getItemKey(item);
-                playerAmounts.merge(key, item.getAmount(), Integer::sum);
+        // Для каждого уникального предмета из кита проверяем сколько есть у игрока
+        for (int i = 0; i < uniqueKitItems.size(); i++) {
+            org.bukkit.inventory.ItemStack kitItem = uniqueKitItems.get(i);
+            int needed = kitAmounts.get(i);
+            
+            // Считаем сколько такого предмета есть у игрока
+            int has = 0;
+            for (org.bukkit.inventory.ItemStack invItem : inv.getContents()) {
+                if (invItem != null && kitItem.isSimilar(invItem)) {
+                    has += invItem.getAmount();
+                }
             }
-        }
-        
-        // Добавляем недостающие предметы
-        for (java.util.Map.Entry<String, Integer> entry : kitAmounts.entrySet()) {
-            String key = entry.getKey();
-            int needed = entry.getValue();
-            int has = playerAmounts.getOrDefault(key, 0);
+            
             int toAdd = needed - has;
+            plugin.debug("KillRegen: " + kitItem.getType().name() + " нужно=" + needed + " есть=" + has + " добавить=" + toAdd);
             
             if (toAdd > 0) {
-                // Находим оригинальный предмет из кита для добавления
-                for (org.bukkit.inventory.ItemStack kitItem : kitItems) {
-                    if (kitItem != null && getItemKey(kitItem).equals(key)) {
-                        org.bukkit.inventory.ItemStack toGive = kitItem.clone();
-                        toGive.setAmount(toAdd);
-                        inv.addItem(toGive);
-                        plugin.debug("KillRegen: добавлено " + toAdd + "x " + kitItem.getType().name());
-                        break;
-                    }
-                }
+                org.bukkit.inventory.ItemStack toGive = kitItem.clone();
+                toGive.setAmount(toAdd);
+                inv.addItem(toGive);
+                plugin.debug("KillRegen: добавлено " + toAdd + "x " + kitItem.getType().name());
             }
         }
         
@@ -165,20 +172,5 @@ public class KillRegenListener implements Listener {
         if (kit.getBoots() != null && inv.getBoots() == null) {
             inv.setBoots(kit.getBoots().clone());
         }
-    }
-    
-    /**
-     * Создаёт уникальный ключ для предмета (тип + durability + displayName)
-     */
-    private String getItemKey(org.bukkit.inventory.ItemStack item) {
-        StringBuilder key = new StringBuilder();
-        key.append(item.getType().name());
-        key.append(":");
-        key.append(item.getDurability());
-        if (item.hasItemMeta() && item.getItemMeta().hasDisplayName()) {
-            key.append(":");
-            key.append(item.getItemMeta().getDisplayName());
-        }
-        return key.toString();
     }
 }
