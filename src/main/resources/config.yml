@@ -1,0 +1,31 @@
+settings:
+  debug: false
+
+killregen:
+  enabled: true
+  kits:
+    - "ffa"
+  use-edited-kits: true
+  refill-kit: true
+  heal: true
+
+# Зелёная кожаная броня для союзников в пати боях (требует ProtocolLib)
+party-glow:
+  enabled: true
+
+quickranked:
+  already-in-fight: '&cТы уже в бою!'
+  already-in-queue: '&cТы уже в очереди!'
+  no-queue-found: '&cНет доступных очередей с игроками!'
+  joined-queue: '&aТы присоединился к очереди: &e%kit%'
+  queue-join-broadcast: '&r羅 &#C9E4DEИгрок &b<player> &#C9E4DEначал поиск с китом <kit>'
+  notifications-enabled: '&r卵 &#C9E4DEУведомления о поиске матчей &#44DB4Eвключены&f.'
+  notifications-disabled: '&r駱 &#C9E4DEУведомления о поиске матчей &#DD3535отключены&f.'
+
+message:
+  invalid-placeholder: '&cINVALID PLACEHOLDER'
+  invalid-kit: '&cKIT DOESN''T EXIST'
+  invalid-party: '&cINVALID PARTY'
+  party-member:
+    invalid:
+      -player: ''

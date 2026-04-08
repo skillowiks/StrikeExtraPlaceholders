@@ -2,6 +2,7 @@ name: StrikeExtraPlaceholders
 version: '${project.version}'
 main: dev.iiahmed.sep.StrikeExtraPlaceholders
 depend: [ StrikePractice, PlaceholderAPI ]
+softdepend: [ ProtocolLib ]
 authors: [ iiAhmedYT ]
 description: An additional Placeholders system for StrikePractice
 website: https://iiahmed.dev

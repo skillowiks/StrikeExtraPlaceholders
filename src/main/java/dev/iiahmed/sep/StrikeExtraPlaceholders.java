@@ -4,6 +4,7 @@ import dev.iiahmed.sep.command.QuickRanked;
 import dev.iiahmed.sep.command.QueueNotify;
 import dev.iiahmed.sep.command.SEP;
 import dev.iiahmed.sep.listener.KillRegenListener;
+import dev.iiahmed.sep.listener.PartyGlowListener;
 import dev.iiahmed.sep.listener.QueueListener;
 import dev.iiahmed.sep.util.Expantion;
 import ga.strikepractice.StrikePractice;
@@ -26,16 +27,23 @@ public final class StrikeExtraPlaceholders extends JavaPlugin {
     private HashMap<String, Integer> fightAmounts;
     private boolean debug;
     private QueueListener queueListener;
+    private PartyGlowListener partyGlowListener;
 
     @Override
     public void onEnable() {
         instance = this;
         saveDefaultConfig();
+        this.debug = getConfig().getBoolean("settings.debug");
         runTask();
         new Expantion().register();
-        Bukkit.getPluginCommand("SEP").setExecutor(new SEP());
-        Bukkit.getPluginCommand("quickranked").setExecutor(new QuickRanked());
-        Bukkit.getPluginCommand("queuenotify").setExecutor(new QueueNotify());
+
+        var sepCmd = getCommand("SEP");
+        if (sepCmd != null) sepCmd.setExecutor(new SEP());
+        var qrCmd = getCommand("quickranked");
+        if (qrCmd != null) qrCmd.setExecutor(new QuickRanked());
+        var qnCmd = getCommand("queuenotify");
+        if (qnCmd != null) qnCmd.setExecutor(new QueueNotify());
+
         queueListener = new QueueListener(this);
         queueListener.start();
         
@@ -45,7 +53,16 @@ public final class StrikeExtraPlaceholders extends JavaPlugin {
             getLogger().info("KillRegen enabled");
         }
         
-        this.debug = getConfig().getBoolean("settings.debug");
+        // Регистрируем glow для пати боёв если включён и ProtocolLib есть
+        if (getConfig().getBoolean("party-glow.enabled", true)) {
+            if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
+                partyGlowListener = new PartyGlowListener(this);
+                Bukkit.getPluginManager().registerEvents(partyGlowListener, this);
+                getLogger().info("PartyGlow enabled (ProtocolLib)");
+            } else {
+                getLogger().warning("PartyGlow: ProtocolLib не найден, функция отключена");
+            }
+        }
     }
 
     public void reloadSystem() {
@@ -59,41 +76,35 @@ public final class StrikeExtraPlaceholders extends JavaPlugin {
     }
 
     private void runTask() {
-        // Увеличен интервал с 2 до 5 секунд для снижения нагрузки
-        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this::update, 0, 5 * 20);
+        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this::update, 0, 10 * 20);
         if (taskID == -1) runTask();
     }
 
-    @SuppressWarnings("ConstantConditions")
     public void update() {
         StrikePracticeAPI api = StrikePractice.getAPI();
-        HashMap<String, Integer> queueAmounts = new HashMap<>();
-        HashMap<String, Integer> fightAmounts = new HashMap<>();
+        HashMap<String, Integer> newQueueAmounts = new HashMap<>();
+        HashMap<String, Integer> newFightAmounts = new HashMap<>();
         api.getKits().forEach(kit -> {
-            queueAmounts.put(kit.getName(), 0);
-            fightAmounts.put(kit.getName(), 0);
+            newQueueAmounts.put(kit.getName(), 0);
+            newFightAmounts.put(kit.getName(), 0);
         });
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (api.isInFight(player)) {
-                String kit = api.getFight(player).getKit().getName();
-                if (!fightAmounts.containsKey(kit)) {
-                    // kit is probably a custom kit
-                    continue;
-                }
-                int i = fightAmounts.get(kit);
-                fightAmounts.put(kit, i + 1);
+                var fight = api.getFight(player);
+                if (fight == null || fight.getKit() == null) continue;
+                String kit = fight.getKit().getName();
+                if (!newFightAmounts.containsKey(kit)) continue;
+                newFightAmounts.merge(kit, 1, Integer::sum);
             } else if (api.isInQueue(player)) {
-                String kit = api.getQueuedKit(player).getName();
-                if (!queueAmounts.containsKey(kit)) {
-                    // kit is probably a custom kit
-                    continue;
-                }
-                int i = queueAmounts.get(kit);
-                queueAmounts.put(kit, i + 1);
+                var qKit = api.getQueuedKit(player);
+                if (qKit == null) continue;
+                String kit = qKit.getName();
+                if (!newQueueAmounts.containsKey(kit)) continue;
+                newQueueAmounts.merge(kit, 1, Integer::sum);
             }
         }
-        this.queueAmounts = queueAmounts;
-        this.fightAmounts = fightAmounts;
+        this.queueAmounts = newQueueAmounts;
+        this.fightAmounts = newFightAmounts;
     }
 
     private void cancelTask() {
@@ -105,6 +116,9 @@ public final class StrikeExtraPlaceholders extends JavaPlugin {
         cancelTask();
         if (queueListener != null) {
             queueListener.stop();
+        }
+        if (partyGlowListener != null) {
+            partyGlowListener.shutdown();
         }
     }
 }

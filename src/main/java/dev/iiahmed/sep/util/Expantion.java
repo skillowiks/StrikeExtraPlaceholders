@@ -49,8 +49,9 @@ public class Expantion extends PlaceholderExpansion {
         if (placeholder.startsWith("dynamicqueue_")) {
             kit = placeholder.replace("dynamicqueue_", "");
 
-            int i = instance.getQueueAmounts().get(kit);
-            return i == 0? String.valueOf(1) : String.valueOf(i + 1);
+            Integer val = instance.getQueueAmounts().get(kit);
+            if (val == null) return Message.INVALID_KIT.toString();
+            return val == 0 ? String.valueOf(1) : String.valueOf(val + 1);
         }
 
 
@@ -58,8 +59,9 @@ public class Expantion extends PlaceholderExpansion {
         if (placeholder.startsWith("dynamicqueue2_")) {
             kit = placeholder.replace("dynamicqueue2_", "");
 
-            int i = instance.getQueueAmounts().get(kit);
-            return i == 0? String.valueOf(1) : String.valueOf(2);
+            Integer val = instance.getQueueAmounts().get(kit);
+            if (val == null) return Message.INVALID_KIT.toString();
+            return val == 0 ? String.valueOf(1) : String.valueOf(2);
         }
 
         /* fighting players (per kit) */
@@ -75,8 +77,9 @@ public class Expantion extends PlaceholderExpansion {
         if (placeholder.startsWith("dynamicfight_")) {
             kit = placeholder.replace("dynamicfight_", "");
 
-            int i = instance.getFightAmounts().get(kit);
-            return i == 0? String.valueOf(1) : String.valueOf(i);
+            Integer val = instance.getFightAmounts().get(kit);
+            if (val == null) return Message.INVALID_KIT.toString();
+            return val == 0 ? String.valueOf(1) : String.valueOf(val);
         }
 
         /* partyMember */

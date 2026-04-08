@@ -22,14 +22,13 @@ public class QueueListener {
     private static final Pattern HEX_PATTERN = Pattern.compile("&#([A-Fa-f0-9]{6})");
     private int taskId;
 
+    // Кэшированный шаблон сообщения — пересоздаётся только при reload
+    private String cachedMessageTemplate;
+
     public QueueListener(StrikeExtraPlaceholders plugin) {
         this.plugin = plugin;
     }
 
-    /**
-     * Переключает уведомления для игрока
-     * @return true если уведомления теперь отключены, false если включены
-     */
     public static boolean toggleNotifications(UUID uuid) {
         if (disabledNotifications.contains(uuid)) {
             disabledNotifications.remove(uuid);
@@ -46,51 +45,46 @@ public class QueueListener {
 
     public void start() {
         StrikePracticeAPI api = StrikePractice.getAPI();
-        
+        cachedMessageTemplate = getMessage("queue-join-broadcast");
+
         taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 UUID uuid = player.getUniqueId();
                 boolean inQueue = api.isInQueue(player);
-                
+
                 if (inQueue && !playersInQueue.contains(uuid)) {
-                    // Игрок только что зашёл в очередь
                     playersInQueue.add(uuid);
-                    
+
                     BattleKit kit = api.getQueuedKit(player);
-                    if (kit != null) {
-                        String kitName = kit.getName();
-                        
-                        // Игнорируем FFA
-                        if (!kitName.toLowerCase().contains("ffa")) {
-                            // Используем getFancyName() или displayName из иконки
-                            String kitDisplay = kit.getFancyName();
-                            if (kitDisplay == null || kitDisplay.isEmpty()) {
-                                // Пробуем взять из иконки
-                                if (kit.getIcon() != null && kit.getIcon().hasItemMeta() 
-                                        && kit.getIcon().getItemMeta().hasDisplayName()) {
-                                    kitDisplay = kit.getIcon().getItemMeta().getDisplayName();
-                                } else {
-                                    kitDisplay = kitName;
-                                }
-                            }
-                            
-                            String message = getMessage("queue-join-broadcast")
-                                    .replace("<player>", player.getName())
-                                    .replace("<kit>", kitDisplay);
-                            // Отправляем только тем, у кого включены уведомления
-                            for (Player online : Bukkit.getOnlinePlayers()) {
-                                if (!disabledNotifications.contains(online.getUniqueId())) {
-                                    online.sendMessage(message);
-                                }
-                            }
+                    if (kit == null) continue;
+                    String kitName = kit.getName();
+                    if (kitName.toLowerCase().contains("ffa")) continue;
+
+                    String kitDisplay = kit.getFancyName();
+                    if (kitDisplay == null || kitDisplay.isEmpty()) {
+                        if (kit.getIcon() != null && kit.getIcon().hasItemMeta()
+                                && kit.getIcon().getItemMeta() != null
+                                && kit.getIcon().getItemMeta().hasDisplayName()) {
+                            kitDisplay = kit.getIcon().getItemMeta().getDisplayName();
+                        } else {
+                            kitDisplay = kitName;
+                        }
+                    }
+
+                    String message = cachedMessageTemplate
+                            .replace("<player>", player.getName())
+                            .replace("<kit>", kitDisplay);
+
+                    for (Player online : Bukkit.getOnlinePlayers()) {
+                        if (!disabledNotifications.contains(online.getUniqueId())) {
+                            online.sendMessage(message);
                         }
                     }
                 } else if (!inQueue && playersInQueue.contains(uuid)) {
-                    // Игрок вышел из очереди
                     playersInQueue.remove(uuid);
                 }
             }
-        }, 0L, 10L); // Проверка каждые 0.5 секунды
+        }, 0L, 40L);
     }
 
     public void stop() {
@@ -112,7 +106,6 @@ public class QueueListener {
     private String translateHex(String message) {
         Matcher matcher = HEX_PATTERN.matcher(message);
         StringBuffer buffer = new StringBuffer();
-        
         while (matcher.find()) {
             String hex = matcher.group(1);
             StringBuilder replacement = new StringBuilder("§x");
@@ -122,7 +115,6 @@ public class QueueListener {
             matcher.appendReplacement(buffer, replacement.toString());
         }
         matcher.appendTail(buffer);
-        
         return ChatColor.translateAlternateColorCodes('&', buffer.toString());
     }
 }
