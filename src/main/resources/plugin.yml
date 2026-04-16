@@ -1,8 +1,9 @@
 name: StrikeExtraPlaceholders
 version: '${project.version}'
 main: dev.iiahmed.sep.StrikeExtraPlaceholders
+api-version: '1.21'
 depend: [ StrikePractice, PlaceholderAPI ]
-softdepend: [ ProtocolLib ]
+softdepend: [ ProtocolLib, DeluxeMenus ]
 authors: [ iiAhmedYT ]
 description: An additional Placeholders system for StrikePractice
 website: https://iiahmed.dev
@@ -15,3 +16,5 @@ commands:
   queuenotify:
     description: Включить/выключить уведомления о поиске матчей
     aliases: [qn, queuealert]
+  duel:
+    description: Вызвать игрока на дуэль с выбором кита через меню

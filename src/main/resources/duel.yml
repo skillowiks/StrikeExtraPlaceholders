@@ -1,0 +1,166 @@
+# Меню выбора кита для /duel
+kit_menu:
+  title: '           &nвыберите кит:'
+  size: 54
+  kits:
+    wellmine1:
+      name: '&fНабор: &#90FBFEW&#85EDF9e&#7ADFF4l&#6FD1EFl&#65C2EAM&#5AB4E5i&#4FA6E0n&#4498DBe #1'
+      material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjIxOTk5NDM3YjFkZTJjNDcyMGFhZDQzMmIyZWE1MzgyZTE1NDgyNzc1MjNmMjViMGY1NWMzOWEwMWMyYTljMCJ9fX0='
+      slot: 4
+    wellmine2:
+      name: '&fНабор: &#90FBFEW&#85EDF9e&#7ADFF4l&#6FD1EFl&#65C2EAM&#5AB4E5i&#4FA6E0n&#4498DBe #2'
+      material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjQ1ZTg1ZWRkYTFhODFkMjI0YWRiNzEzYjEzYjcwMzhkNWNjNmJlY2Q5OGE3MTZiOGEzZGVjN2UzYTBmOTgxNyJ9fX0='
+      slot: 14
+    wellmine3:
+      name: '&fНабор: &#90FBFEW&#85EDF9e&#7ADFF4l&#6FD1EFl&#65C2EAM&#5AB4E5i&#4FA6E0n&#4498DBe #3'
+      material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjY2ODMyOWU2NDVmY2MxMGE3OWVlNzM5MWMxODM1Yzc4ZWNjYmE5NWE3YmEzODk1YzNkYTg1YTYwIn19fQ=='
+      slot: 22
+    wellmine4:
+      name: '&fНабор: &#90FBFEW&#85EDF9e&#7ADFF4l&#6FD1EFl&#65C2EAM&#5AB4E5i&#4FA6E0n&#4498DBe #4'
+      material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTE2MmRkMGI5ZjY1YjU4YTFlNzBmODFkOGUwM2U4ZmY2YzUzZTRlOTg1YmRiZTAxODY1NThkOGE2OWE4MTE4OSJ9fX0='
+      slot: 12
+    nethpot:
+      name: '&#90FBFEN&#83EBF8e&#77DAF2t&#6ACAEDh&#5DB9E7e&#51A9E1r&#4498DBi&#4498DBt&#4498DBe &#4498DBP&#4498DBo&#4498DBt'
+      material: NETHERITE_SWORD
+      slot: 13
+    diapot:
+      name: '&#90FBFED&#81E7F7i&#72D3F0a&#62C0E9m&#53ACE2o&#4498DBn&#4498DBd &#4498DBP&#4498DBo&#4498DBt'
+      material: DIAMOND_SWORD
+      slot: 23
+    funtime1:
+      name: '&fНабор: &#90FBFEF&#88F0FAu&#7FE5F6n&#77DAF2T&#6ECFEEi&#66C4EBm&#5DB9E7e &#4CA3DF#&#4498DB1'
+      material: ender_eye
+      slot: 24
+    funtime2:
+      name: '&fНабор: &#90FBFEF&#88F0FAu&#7FE5F6n&#77DAF2T&#6ECFEEi&#66C4EBm&#5DB9E7e &#4CA3DF#&#4498DB2'
+      material: sugar
+      slot: 25
+    funtime3:
+      name: '&fНабор: &#90FBFEF&#88F0FAu&#7FE5F6n&#77DAF2T&#6ECFEEi&#66C4EBm&#5DB9E7e &#4CA3DF#&#4498DB3 &7(&c1.21&7)'
+      material: bundle
+      slot: 33
+    funtime4:
+      name: '&fНабор: &#90FBFEF&#88F0FAu&#7FE5F6n&#77DAF2T&#6ECFEEi&#66C4EBm&#5DB9E7e &#4CA3DF#&#4498DB4 &7(&c1.21&7)'
+      material: 'basehead-ewogICJ0aW1lc3RhbXAiIDogMTc1MDI3ODY0MTkwMA=='
+      slot: 34
+    funtime5:
+      name: '&fНабор: &#90FBFEF&#88F0FAu&#7FE5F6n&#77DAF2T&#6ECFEEi&#66C4EBm&#5DB9E7e &#4CA3DF#&#4498DB5 &7(&c1.21&7)'
+      material: 'basehead-ewogICJ0aW1lc3RhbXAiIDogMTc1MDM1NDQ1NTE5Mg=='
+      slot: 42
+    funtime6:
+      name: '&fНабор: &#90FBFEF&#88F0FAu&#7FE5F6n&#77DAF2T&#6ECFEEi&#66C4EBm&#5DB9E7e &#4CA3DF#&#4498DB6 &7(&c1.21&7)'
+      material: 'basehead-ewogICJ0aW1lc3RhbXAiIDogMTc1MDI3ODUzMjE4Mw=='
+      slot: 43
+    funtime3nodebuff:
+      name: '&fНабор: &#90FBFEF&#88F0FAu&#7FE5F6n&#77DAF2T&#6ECFEEi&#66C4EBm&#5DB9E7e &#4CA3DF#&#4498DB3 &7(&#28C61FNoDebuff&7)'
+      material: bundle
+      slot: 52
+    funtime4nodebuff:
+      name: '&fНабор: &#90FBFEF&#88F0FAu&#7FE5F6n&#77DAF2T&#6ECFEEi&#66C4EBm&#5DB9E7e &#4CA3DF#&#4498DB4 &7(&#28C61FNoDebuff&7)'
+      material: 'basehead-ewogICJ0aW1lc3RhbXAiIDogMTc1MDI3ODY0MTkwMA=='
+      slot: 44
+    funtime5nodebuff:
+      name: '&fНабор: &#90FBFEF&#88F0FAu&#7FE5F6n&#77DAF2T&#6ECFEEi&#66C4EBm&#5DB9E7e &#4CA3DF#&#4498DB5 &7(&#28C61FNoDebuff&7)'
+      material: 'basehead-ewogICJ0aW1lc3RhbXAiIDogMTc1MDM1NDQ1NTE5Mg=='
+      slot: 36
+    funtime6nodebuff:
+      name: '&fНабор: &#90FBFEF&#88F0FAu&#7FE5F6n&#77DAF2T&#6ECFEEi&#66C4EBm&#5DB9E7e &#4CA3DF#&#4498DB6 &7(&#28C61FNoDebuff&7)'
+      material: 'basehead-ewogICJ0aW1lc3RhbXAiIDogMTc1MDI3ODUzMjE4Mw=='
+      slot: 46
+    hwlite1:
+      name: '&fНабор: &#90FBFEH&#8AF3FBo&#84ECF9l&#7EE4F6y&#79DDF3W&#73D5F1o&#6DCDEEr&#67C6EBl&#61BEE8d #1 &7[&aLite&7]'
+      material: prismarine_shard
+      slot: 19
+    hwlite2:
+      name: '&fНабор: &#90FBFEH&#8AF3FBo&#84ECF9l&#7EE4F6y&#79DDF3W&#73D5F1o&#6DCDEEr&#67C6EBl&#61BEE8d #2 &7[&aLite&7]'
+      material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmFmZjJlYjQ5OGU1YzZhMDQ0ODRmMGM5Zjc4NWI0NDg0NzlhYjIxM2RmOTVlYzkxMTc2YTMwOGExMmFkZDcwIn19fQ=='
+      slot: 20
+    hwlite3:
+      name: '&fНабор: &#90FBFEH&#8AF3FBo&#84ECF9l&#7EE4F6y&#79DDF3W&#73D5F1o&#6DCDEEr&#67C6EBl&#61BEE8d #3 &7[&aLite&7]'
+      material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjA5NWE3ZmQ5MGRhYTFiYmU3MDY5MDg5NzQwZTA1ZDBiZmM2NjI5NmVlM2M0MGVlNzFhNGUwYTY2MTZiMmJiYyJ9fX0='
+      slot: 28
+    hwlite4:
+      name: '&fНабор: &#90FBFEH&#8AF3FBo&#84ECF9l&#7EE4F6y&#79DDF3W&#73D5F1o&#6DCDEEr&#67C6EBl&#61BEE8d #4 &7[&aLite&7]'
+      material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODNlZDRjZTIzOTMzZTY2ZTA0ZGYxNjA3MDY0NGY3NTk5ZWViNTUzMDdmN2VhZmU4ZDkyZjQwZmIzNTIwODYzYyJ9fX0='
+      slot: 29
+    hwlite5:
+      name: '&fНабор: &#90FBFEH&#8AF3FBo&#84ECF9l&#7EE4F6y&#79DDF3W&#73D5F1o&#6DCDEEr&#67C6EBl&#61BEE8d #5 &7[&aLite&7] &7(&cɴᴇᴡ&7)'
+      material: 'basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWE2MmI5ZGU2YTI2Yjg2ODY5Y2EyMmVhNDBmMWJkZTgwYTA0MzBhNTQ1NDdiZWNjZThmZGE4NzA3Nzc3MjU4ZiJ9fX0='
+      slot: 37
+    hwlite6:
+      name: '&fНабор: &#90FBFEH&#8AF3FBo&#84ECF9l&#7EE4F6y&#79DDF3W&#73D5F1o&#6DCDEEr&#67C6EBl&#61BEE8d #6 &7[&aLite&7] &7(&cɴᴇᴡ&7)'
+      material: popped_chorus_fruit
+      slot: 38
+    nethop:
+      name: '&#90FBFEN&#77DAF2e&#5DB9E7t&#4498DBh&#4498DBO&#4498DBp'
+      material: netherite_helmet
+      slot: 21
+    diaop:
+      name: '&#90FBFED&#6ACAEDi&#4498DBa&#4498DBO&#4498DBp'
+      material: diamond_helmet
+      slot: 30
+    macelt:
+      name: '&#90FBFEM&#6ACAEDa&#4498DBc&#4498DBe &7(LT)'
+      material: MACE
+      slot: 31
+    axe:
+      name: '&#90FBFEA&#83EBF8x&#77DAF2e &#5DB9E7& &#4498DBS&#4498DBh&#4498DBi&#4498DBe&#4498DBl&#4498DBd'
+      material: DIAMOND_AXE
+      slot: 32
+    sword:
+      name: '&#90FBFES&#6ACAEDw&#4498DBo&#4498DBr&#4498DBd'
+      material: DIAMOND_CHESTPLATE
+      slot: 39
+    maceht:
+      name: '&#90FBFEM&#6ACAEDa&#4498DBc&#4498DBe &7(HT)'
+      material: MACE
+      slot: 40
+    smp:
+      name: '&#90FBFES&#77DAF2M&#5DB9E7P &#4498DBK&#4498DBi&#4498DBt'
+      material: SHIELD
+      slot: 41
+
+# Меню выбора раундов
+round_menu:
+  title: '          &nкол-во раундов'
+  size: 27
+  rounds:
+    '1':
+      name: '&#90FBFE⚡ &lРаунд 1'
+      material: CLOCK
+      amount: 1
+      slot: 10
+    '3':
+      name: '&#90FBFE🔥 &lРаунд 3'
+      material: CLOCK
+      amount: 3
+      slot: 11
+    '5':
+      name: '&#90FBFE💥 &lРаунд 5'
+      material: CLOCK
+      amount: 5
+      slot: 12
+    '9':
+      name: '&#90FBFE⚔ &lРаунд 9'
+      material: CLOCK
+      amount: 9
+      slot: 13
+    '12':
+      name: '&#90FBFE🛡 &lРаунд 12'
+      material: CLOCK
+      amount: 12
+      slot: 14
+    '15':
+      name: '&#90FBFE👑 &lРаунд 15'
+      material: CLOCK
+      amount: 15
+      slot: 15
+    '20':
+      name: '&#90FBFE🏆 &lРаунд 20'
+      material: CLOCK
+      amount: 20
+      slot: 16
+
+# Шаблон команды. <player> = ник цели, <rounds> = раунды, <kit> = kitId
+# По умолчанию: strikepractice:1v1 <player> <rounds> <kit>copy
+command_template: 'strikepractice:1v1 <player> <rounds> <kit>copy'

@@ -1,21 +1,15 @@
 package dev.iiahmed.sep.listener;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.ListenerPriority;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.events.PacketEvent;
-import com.comphenix.protocol.wrappers.EnumWrappers.ItemSlot;
-import com.comphenix.protocol.wrappers.Pair;
-import dev.iiahmed.sep.StrikeExtraPlaceholders;
-import ga.strikepractice.events.FightEndEvent;
-import ga.strikepractice.events.PartyDisbandEvent;
-import ga.strikepractice.events.PartySplitStartEvent;
-import ga.strikepractice.events.PartyVsPartyStartEvent;
-import ga.strikepractice.fights.party.partyfights.PartySplit;
-import ga.strikepractice.party.Party;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -27,8 +21,22 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
+import com.comphenix.protocol.events.ListenerPriority;
+import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.events.PacketEvent;
+import com.comphenix.protocol.wrappers.EnumWrappers.ItemSlot;
+import com.comphenix.protocol.wrappers.Pair;
+
+import dev.iiahmed.sep.StrikeExtraPlaceholders;
+import ga.strikepractice.events.FightEndEvent;
+import ga.strikepractice.events.PartyDisbandEvent;
+import ga.strikepractice.events.PartySplitStartEvent;
+import ga.strikepractice.events.PartyVsPartyStartEvent;
+import ga.strikepractice.fights.party.partyfights.PartySplit;
 
 public class PartyGlowListener implements Listener {
 
@@ -127,18 +135,45 @@ public class PartyGlowListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPartyVsParty(PartyVsPartyStartEvent event) {
-        addPartyTeam(event.getChallangerParty());
-        addPartyTeam(event.getEnemyParty());
-        rebuildEntityIdMap();
-        sendInitialFakeArmor();
+        // Строим команды через API getTeammates()
+        var fight = event.getFight();
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            List<Player> allPlayers = fight.getPlayersInFight();
+            if (allPlayers == null || allPlayers.isEmpty()) return;
+
+            Set<String> assigned = new HashSet<>();
+            for (Player player : allPlayers) {
+                if (assigned.contains(player.getName())) continue;
+                Set<String> team = new HashSet<>();
+                team.add(player.getName());
+                List<String> mates = fight.getTeammates(player);
+                if (mates != null) team.addAll(mates);
+                assigned.addAll(team);
+                addTeam(team);
+            }
+            rebuildEntityIdMap();
+            sendInitialFakeArmor();
+        }, 5L);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPartySplit(PartySplitStartEvent event) {
         PartySplit fight = event.getFight();
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            addTeam(new HashSet<>(fight.getTeam1()));
-            addTeam(new HashSet<>(fight.getTeam2()));
+            // Строим команды через API getTeammates() — самый надёжный способ
+            List<Player> allPlayers = fight.getPlayersInFight();
+            if (allPlayers == null || allPlayers.isEmpty()) return;
+
+            Set<String> assigned = new HashSet<>();
+            for (Player player : allPlayers) {
+                if (assigned.contains(player.getName())) continue;
+                Set<String> team = new HashSet<>();
+                team.add(player.getName());
+                List<String> mates = fight.getTeammates(player);
+                if (mates != null) team.addAll(mates);
+                assigned.addAll(team);
+                addTeam(team);
+            }
             rebuildEntityIdMap();
             sendInitialFakeArmor();
         }, 20L);
@@ -174,12 +209,6 @@ public class PartyGlowListener implements Listener {
     }
 
     // ==================== ВНУТРЕННЯЯ ЛОГИКА ====================
-
-    private void addPartyTeam(Party party) {
-        Set<String> names = new HashSet<>();
-        for (Object m : party.getMembersNames()) names.add((String) m);
-        addTeam(names);
-    }
 
     private void addTeam(Set<String> names) {
         for (String name : names) {

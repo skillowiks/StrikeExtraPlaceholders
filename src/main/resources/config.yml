@@ -1,31 +1,42 @@
 settings:
   debug: false
-
+# Фикс бага killregen - эффекты не сбрасываются после убийства
 killregen:
   enabled: true
+  # Киты для которых работает (проверяется contains)
   kits:
-    - "ffa"
-  use-edited-kits: true
+    - "copy"
+  # Хилить игрока после убийства
+  heal: false
+  # Выдавать кит заново
   refill-kit: true
-  heal: true
+  # Использовать отредактированный кит игрока
+  use-edited-kits: true
 
-# Зелёная кожаная броня для союзников в пати боях (требует ProtocolLib)
 party-glow:
   enabled: true
 
+kiteditor:
+  enabled: true
+  menu: "kiteditor"
+
+duel:
+  enabled: true
+  self-duel-message: '&cНельзя вызвать себя на дуэль!'
+  usage: '&#90FBFE⚔ &#C9E4DEИспользование: &f/duel &#90FBFE<ник>
+# Those messages are null safe so if they can't be read the plugin would use default ones automatically.
 quickranked:
   already-in-fight: '&cТы уже в бою!'
   already-in-queue: '&cТы уже в очереди!'
   no-queue-found: '&cНет доступных очередей с игроками!'
   joined-queue: '&aТы присоединился к очереди: &e%kit%'
-  queue-join-broadcast: '&r羅 &#C9E4DEИгрок &b<player> &#C9E4DEначал поиск с китом <kit>'
-  notifications-enabled: '&r卵 &#C9E4DEУведомления о поиске матчей &#44DB4Eвключены&f.'
-  notifications-disabled: '&r駱 &#C9E4DEУведомления о поиске матчей &#DD3535отключены&f.'
-
+  queue-join-broadcast: '&r羅 &#C9E4DEИгрок &b<player> &#C9E4DEначал поиск с китом <kit>'
+  notifications-enabled: '&r卵 &#C9E4DEУведомления о поиске матчей &#44DB4Eвключены&f.'
+  notifications-disabled: '&r駱 &#C9E4DEУведомления о поиске матчей &#DD3535отключены&f.'
 message:
   invalid-placeholder: '&cINVALID PLACEHOLDER'
   invalid-kit: '&cKIT DOESN''T EXIST'
   invalid-party: '&cINVALID PARTY'
   party-member:
-    invalid:
-      -player: ''
+    # kept it empty so it doesnt appear when it's requested
+    invalid:-player: ''

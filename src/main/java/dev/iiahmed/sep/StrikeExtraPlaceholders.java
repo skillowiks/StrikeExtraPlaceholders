@@ -1,5 +1,7 @@
 package dev.iiahmed.sep;
 
+import dev.iiahmed.sep.command.DuelCmd;
+import dev.iiahmed.sep.command.KitEditorCmd;
 import dev.iiahmed.sep.command.QuickRanked;
 import dev.iiahmed.sep.command.QueueNotify;
 import dev.iiahmed.sep.command.SEP;
@@ -43,6 +45,21 @@ public final class StrikeExtraPlaceholders extends JavaPlugin {
         if (qrCmd != null) qrCmd.setExecutor(new QuickRanked());
         var qnCmd = getCommand("queuenotify");
         if (qnCmd != null) qnCmd.setExecutor(new QueueNotify());
+
+        // KitEditor через DeluxeMenus
+        if (getConfig().getBoolean("kiteditor.enabled", true)) {
+            Bukkit.getPluginManager().registerEvents(new KitEditorCmd(), this);
+            getLogger().info("KitEditor command enabled");
+        }
+
+        // Duel — своё меню через Bukkit инвентари
+        if (getConfig().getBoolean("duel.enabled", true)) {
+            DuelCmd duelHandler = new DuelCmd(this);
+            var duelCmd = getCommand("duel");
+            if (duelCmd != null) duelCmd.setExecutor(duelHandler);
+            Bukkit.getPluginManager().registerEvents(duelHandler, this);
+            getLogger().info("Duel command enabled");
+        }
 
         queueListener = new QueueListener(this);
         queueListener.start();
